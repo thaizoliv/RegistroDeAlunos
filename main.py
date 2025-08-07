@@ -54,9 +54,26 @@ class SistemaDeRegistro:
         self.conn.commit()
 
          #mostrar mensagem de sucesso
-        messagebox.showinfo('Sucesso', f'Estudante com ID:{id[8]} foi Deletado!')
+        messagebox.showinfo('Sucesso', f'Estudante com ID:{id} foi Deletado!')
 
         #criando uma instancia do sistema de registro
 sistema_de_registro = SistemaDeRegistro()
 
+#informacoes
+#estudante  = ('Helena', 'helena@gmail.com','123','F','01/01/2005','Rua A, 123','Engenharia','path/to/image2.jpg')
+#sistema_de_registro.register_student(estudante)
 
+#ver estudantes
+#todos_alunos = sistema_de_registro.view_all_students()
+
+#procurar aluno
+#aluno = sistema_de_registro.search_student(2)
+
+#atualizar aluno
+#estudante  = ('Helena', 'helena@gmail.com','444','F','01/01/2005','Rua A, 123','Engenharia','path/to/image2.jpg', 2)
+#aluno = sistema_de_registro.update_student(estudante)
+
+#sistema_de_registro.delete_student(1)
+
+#ver estudantes
+#todos_alunos = sistema_de_registro.view_all_students()
