@@ -31,6 +31,10 @@ class SistemaDeRegistro:
         self.c.execute("SELECT * FROM estudantes")
         dados = self.c.fetchall()
 
+
+        for i in dados:
+            print(f'ID:{i[0]} | Nome: {i[1]} | E-mail: {i[2]} | Tel: {i[3]} | Sexo: {i[4]} | Data de Nascimento: {i[5]} | Endereco: {i[6]} | Curso: {i[7]} | Imagem: {i[8]} ')
+
        
         return dados
 
@@ -41,6 +45,7 @@ class SistemaDeRegistro:
         dados = self.c.fetchone()
 
         print(f'ID:{dados[0]} | Nome: {dados[1]} | E-mail: {dados[2]} | Tel: {dados[3]} | Sexo: {dados[4]} | Data de Nascimento: {dados[5]} | Endereco: {dados[6]} | Curso: {dados[7]} | Imagem: {dados[8]} ') 
+        return dados
 
 
     def update_student(self, nova_valores):
@@ -50,6 +55,7 @@ class SistemaDeRegistro:
 
         #mostrar mensagem de sucesso
         messagebox.showinfo('Sucesso', f'Estudante com ID:{nova_valores[8]} foi atualizado!')
+        return self.c.rowcoun
 
     def delete_student(self,id):
         self.c.execute("DELETE FROM estudantes WHERE id=?", (id,))

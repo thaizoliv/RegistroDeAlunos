@@ -84,7 +84,7 @@ def adicionar():
     curso = c_curso.get()
     img = imagem_string
 
-    lista = [nome, email, tel, sexo, data, endereco, curso, img]
+    lista = [nome, email, tel, sexo, data, endereco, curso, img,]
 
     #verificando se os campos estão preenchidos
     for i in lista:
@@ -99,7 +99,7 @@ def adicionar():
     e_nome.delete(0, END)
     e_email.delete(0, END)
     e_tel.delete(0, END)
-    c_sexo.set(0,END)
+    c_sexo.delete(0,END)
     data_nascimento.delete(0, END)
     e_endereco.delete(0, END)
     c_curso.delete(0, END)
@@ -107,7 +107,126 @@ def adicionar():
     #mostrando valores na tabela
     mostrar_alunos()
 
+#funcao procurar aluno
+def procurar():
+    global imagem_string, imagem, l_imagem
 
+    #id_aluno
+    id_aluno = int(e_procurar.get())
+
+    #buscando aluno
+    dados = sistema_de_registro.search_student(id_aluno)
+    print(dados)
+    
+    #limpando os campos
+    e_nome.delete(0,END)
+    e_email.delete(0,END)
+    e_tel.delete(0,END)
+    c_sexo.delete(0,END)
+    data_nascimento.delete(0,END)
+    e_endereco.delete(0,END)
+    c_curso.delete(0,END)
+    #inserindo os dados nos campos
+    e_nome.insert(END,dados[1]) 
+    e_email.insert(END,dados[2])
+    e_tel.insert(END,dados[3])
+    c_sexo.insert(END,dados[4])
+    data_nascimento.insert(END,dados[5])
+    e_endereco.insert(END,dados[6])
+    c_curso.insert(END,dados[7])
+
+
+    imagem = dados[8]
+    imagem_string = imagem
+
+    imagem = Image.open(imagem)
+    imagem = imagem.resize((130, 130))
+    imagem = ImageTk.PhotoImage(imagem)
+
+    l_imagem = Label(frame_detalhes, image=imagem, bg=co1, fg=co4)
+    l_imagem.place(x=390, y=10)
+
+
+#função atualizar
+def atualizar():
+    global imagem_string, imagem, l_imagem
+    #obtendo id
+    id_aluno = int(e_procurar.get())
+
+
+
+    #obtendo os valores
+    nome = e_nome.get()
+    email = e_email.get()
+    tel = e_tel.get()
+    sexo = c_sexo.get()
+    data = data_nascimento.get()
+    endereco = e_endereco.get()
+    curso = c_curso.get()
+    img = imagem_string
+
+    lista = [nome, email, tel, sexo, data, endereco, curso, img, id_aluno]
+
+    #verificando se os campos estão preenchidos
+    for i in lista:
+        if i == '':
+            messagebox.showerror('Erro', 'Preencha todos os campos!')
+            return
+    
+    #registrando os valores
+    sistema_de_registro.update_student(lista)
+
+    #limpando os campos
+    e_nome.delete(0, END)
+    e_email.delete(0, END)
+    e_tel.delete(0, END)
+    c_sexo.delete(0,END)
+    data_nascimento.delete(0, END)
+    e_endereco.delete(0, END)
+    c_curso.delete(0, END)
+    #abrindo imagem
+    imagem = Image.open('logo.png')
+    imagem = imagem.resize((130, 130))
+    imagem = ImageTk.PhotoImage(imagem)
+
+    l_imagem = Label(frame_detalhes, image=imagem, bg=co1, fg=co4)
+    l_imagem.place(x=390, y=10)
+
+    #mostrando valores na tabela
+    mostrar_alunos()
+
+
+
+#função deletar
+def deletar():
+    global imagem_string, imagem, l_imagem
+    #obtendo id
+    id_aluno = int(e_procurar.get())
+
+    #deletando aluno
+    sistema_de_registro.delete_student(id_aluno)
+    
+    #limpando os campos
+    e_nome.delete(0, END)
+    e_email.delete(0, END)
+    e_tel.delete(0, END)
+    c_sexo.delete(0,END)
+    data_nascimento.delete(0, END)
+    e_endereco.delete(0, END)
+    c_curso.delete(0, END)
+
+    e_procurar.delete(0, END)
+
+    #abrindo imagem
+    imagem = Image.open('logo.png')
+    imagem = imagem.resize((130, 130))
+    imagem = ImageTk.PhotoImage(imagem)
+
+    l_imagem = Label(frame_detalhes, image=imagem, bg=co1, fg=co4)
+    l_imagem.place(x=390, y=10)
+
+    #mostrando valores na tabela
+    mostrar_alunos()
 
 
 #criando os campos de entrada
@@ -218,8 +337,8 @@ e_procurar = Entry(frame_procurar, width=5, justify='center', relief='solid', fo
 e_procurar.grid(row=1, column=0, pady=10, padx=0, sticky=NSEW)
 
 
-botao_alterar = Button(frame_procurar, text='Procurar', width=9, anchor=CENTER, overrelief=RIDGE, font=('Ivy 7 bold'), bg=co1, fg=co0, relief=RAISED)
-botao_alterar.grid(row=1, column=1, pady=10, padx=0, sticky=NSEW)
+botao_procurar = Button(frame_procurar, command=procurar, text='Procurar', width=9, anchor=CENTER, overrelief=RIDGE, font=('Ivy 7 bold'), bg=co1, fg=co0, relief=RAISED)
+botao_procurar.grid(row=1, column=1, pady=10, padx=0, sticky=NSEW)
 
 #botões
 
@@ -232,13 +351,13 @@ app_adicionar.grid(row=1, column=0, pady=5, padx=10, sticky=NSEW)
 app_img_atualizar = Image.open('atualizar.png')
 app_img_atualizar = app_img_atualizar.resize((25, 25))
 app_img_atualizar = ImageTk.PhotoImage(app_img_atualizar)
-app_atualizar = Button(frame_botoes,image=app_img_atualizar, relief=GROOVE, text=' Atualizar', width=100, compound=LEFT, overrelief=RIDGE, font=('Ivy 11'), bg=co1, fg=co0,)
+app_atualizar = Button(frame_botoes,command=atualizar, image=app_img_atualizar, relief=GROOVE, text=' Atualizar', width=100, compound=LEFT, overrelief=RIDGE, font=('Ivy 11'), bg=co1, fg=co0,)
 app_atualizar.grid(row=2, column=0, pady=5, padx=10, sticky=NSEW)
 
 app_img_deletar = Image.open('deletar.png')
 app_img_deletar = app_img_deletar.resize((25, 25))
 app_img_deletar = ImageTk.PhotoImage(app_img_deletar)
-app_deletar = Button(frame_botoes,image=app_img_deletar, relief=GROOVE, text=' Deletar', width=100, compound=LEFT, overrelief=RIDGE, font=('Ivy 11'), bg=co1, fg=co0,)
+app_deletar = Button(frame_botoes,command=deletar, image=app_img_deletar, relief=GROOVE, text=' Deletar', width=100, compound=LEFT, overrelief=RIDGE, font=('Ivy 11'), bg=co1, fg=co0,)
 app_deletar.grid(row=3, column=0, pady=5, padx=10, sticky=NSEW)
 
 #linha lateral
